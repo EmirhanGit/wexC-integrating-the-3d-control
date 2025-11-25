@@ -311,6 +311,5 @@ const GameController = om => {
         boxController,
         tetrominoController,
         restart,
-        movePosition,
     }
 };

@@ -20,82 +20,11 @@ const log = LoggerFactory("ch.fhnw.tetris.gameProjector");
  */
 const projectCustom3dController = gameController => {
     const view = dom(`
-    <header class="custom3dController">
-        <button id="enableMotion">Enable motion</button>
-        <div class="container">
-            <div id="bar-top" class="bar"></div>
-            <div id="bar-bottom" class="bar"></div>
-            <div id="bar-left" class="bar"></div>
-            <div id="bar-right" class="bar"></div>
-            <div id="dot"></div>
+     <header class="custom3dController">
+        <div>
+        TODO
         </div>
     </header>`);
-
-    const [header] = view;
-    const enableBtn = header.querySelector("#enableMotion");
-
-    const activeColor = "#00DDED";
-    const neutralColor = "grey";
-    const betaThreshold = 15;
-    const gammaThreshold = 15;
-
-    const { movePosition } = gameController;
-
-    function updateBars(beta, gamma) {
-        bar_top.style.backgroundColor = neutralColor;
-        bar_bottom.style.backgroundColor = neutralColor;
-        bar_left.style.backgroundColor = neutralColor;
-        bar_right.style.backgroundColor = neutralColor;
-
-        if (beta > betaThreshold) bar_left.style.backgroundColor = activeColor;
-        else if (beta < -betaThreshold) bar_right.style.backgroundColor = activeColor;
-
-        if (gamma > gammaThreshold) bar_bottom.style.backgroundColor = activeColor;
-        else if (gamma < -gammaThreshold) bar_top.style.backgroundColor = activeColor;
-
-        moveDot(beta, gamma);
-    }
-
-    function moveDot(beta, gamma) {
-        let x = 0;
-        let y = 0;
-
-        if (gamma > gammaThreshold) y = 30;
-        else if (gamma < -gammaThreshold) y = -30;
-
-        if (beta > betaThreshold) x = -30;
-        else if (beta < -betaThreshold) x = 30;
-
-        dot.style.transform = `translate(${x}px, ${y}px)`;
-    }
-
-    function handleTilt(beta, gamma) {
-        if (!gameController.playerController.areWeInCharge()) return;
-
-        if (beta > betaThreshold) movePosition(moveLeft);
-        if (beta < -betaThreshold) movePosition(moveRight);
-
-        if (gamma > gammaThreshold) movePosition(moveForw);
-        if (gamma < -gammaThreshold) movePosition(moveBack);
-    }
-
-    function requestOrientation() {
-        if (typeof DeviceOrientationEvent.requestPermission === "function") {
-            DeviceOrientationEvent.requestPermission().then(response => {
-                if (response === "granted") {
-                    console.log("test2");
-                    window.addEventListener("deviceorientation", e => {
-                        updateBars(e.beta, e.gamma);
-                        handleTilt(e.beta, e.gamma);
-                    });
-                }else {
-                    alert('Permission not granted');
-                }
-            });
-        }
-    }
-
-    enableBtn.onclick = requestOrientation;
 
     return view;
 };
