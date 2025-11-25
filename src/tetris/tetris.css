@@ -219,3 +219,9 @@ footer {
     transform-origin: left top;
     transform:        rotateY(-90deg);
 }
+
+input[type="range"] {
+    writing-mode: vertical-lr;
+}
+
+

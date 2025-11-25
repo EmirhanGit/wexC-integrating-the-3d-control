@@ -20,12 +20,12 @@ const log = LoggerFactory("ch.fhnw.tetris.gameProjector");
  */
 const projectCustom3dController = gameController => {
     const view = dom(`
-     <header class="custom3dController">
+     
         <div>
-        TODO
+            <input id="pi_input" type="range" min="0" max="3.14" step="any" />
+            <p>Value: <output id="value"></output></p>
         </div>
-    </header>`);
-
+    `);
     return view;
 };
 
