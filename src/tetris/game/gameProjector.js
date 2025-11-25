@@ -79,6 +79,8 @@ const projectCustom3dController = gameController => {
     function requestOrientation() {
         console.log("Permission requested…");
 
+        gameController.playerController.takeCharge();
+
         if (typeof DeviceOrientationEvent.requestPermission === "function") {
             DeviceOrientationEvent.requestPermission().then(response => {
                 if (response === "granted") {
