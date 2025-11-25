@@ -5,9 +5,6 @@ import {LoggerFactory}            from "../../kolibri/logger/loggerFactory.js";
 import {MISSING_FOREIGN_KEY}      from "../../extension/relationalModelType.js";
 import {projectPlayerList}        from "../player/playerProjector.js";
 import {projectGameState}         from "../gameState/gameStateProjector.js";
-import {
-    moveBack, moveForw, moveLeft, moveRight
-} from "../shape/shapeController.js";
 
 export {projectGame};
 
@@ -19,12 +16,11 @@ const log = LoggerFactory("ch.fhnw.tetris.gameProjector");
  * @return { HTMLCollection }
  */
 const projectCustom3dController = gameController => {
-    const view = dom(`
-     <header class="custom3dController">
-        <div>
-        TODO
-        </div>
-    </header>`);
+    const view = dom(`    
+    <div class="proxyBlock">
+        <img class="swipper" src="https://img.icons8.com/windows/96/000000/hand-cursor.png">
+    </div>
+    `);
 
     return view;
 };

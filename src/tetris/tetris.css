@@ -48,12 +48,23 @@ header {
         }
     }
 }
-.custom3dController{
+
+.proxyBlock{
     position:               fixed;
     z-index:                10;
     inset:                  auto 1em 1em auto;
     background-color:       #FFF2;
+    transform: translateX(-50%) translateY(-50%);
+}
 
+.swipper{
+    min-width: 100px;
+    transform: rotate(-25deg);
+    animation: swipe .8s linear infinite alternate;
+}
+
+@keyframes swipe {
+    100% { transform: rotate(35deg); }
 }
 
 li.active {
