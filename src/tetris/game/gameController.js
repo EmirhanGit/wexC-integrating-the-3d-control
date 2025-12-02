@@ -245,6 +245,7 @@ const GameController = om => {
         document.querySelectorAll("div.proxyBlock").forEach(elem => {
 
             let startX = 0;
+            let startY = 0;
 
             elem.addEventListener("touchstart", e => {
                 startX = e.touches[0].clientX;
