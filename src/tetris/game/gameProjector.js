@@ -17,9 +17,7 @@ const log = LoggerFactory("ch.fhnw.tetris.gameProjector");
  */
 const projectCustom3dController = gameController => {
     const view = dom(`    
-    <div class="proxyBlock">
-        <img class="swipper" src="https://img.icons8.com/windows/96/000000/hand-cursor.png">
-    </div>
+    <div class="proxyBlock"></div>
     `);
 
     return view;

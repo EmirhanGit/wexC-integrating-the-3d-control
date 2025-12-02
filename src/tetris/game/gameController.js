@@ -240,6 +240,23 @@ const GameController = om => {
         };
     };
 
+    const registerTouchListener = () => {
+
+        document.querySelectorAll("div.proxyBlock").forEach(elem => {
+            elem.addEventListener("touchstart", handleStart, { passive: true });
+        });
+
+        document.querySelectorAll("div.proxyBlock").forEach(elem => {
+            elem.addEventListener("click", handleStart, { passive: true });
+        });
+
+        function handleStart(event) {
+            console.log("hello");
+            alert("miau");
+        }
+    };
+
+
 
     /** @type { (onFinishedCallback: Function) => void } */
     const restart  = (onFinishedCallback) => {
@@ -302,6 +319,7 @@ const GameController = om => {
         playerController   .startListening();
 
         registerKeyListener();
+        registerTouchListener();
     };
 
     return {
