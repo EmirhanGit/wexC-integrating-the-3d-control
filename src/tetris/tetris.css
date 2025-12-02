@@ -220,8 +220,37 @@ footer {
     transform:        rotateY(-90deg);
 }
 
-input[type="range"] {
+/*input[type=range] {
     writing-mode: vertical-lr;
+    height: max-content;
+
+}*/
+
+#slider{
+    height: 200px;
+    writing-mode: vertical-lr;
+    background-color: transparent;
 }
+
+#slider::-moz-range-track{
+    background-color: #099fff;
+    width:3px;
+
+}
+
+#slider::-moz-range-thumb{
+    appearance: none;
+    -webkit-appearance: none;
+    margin-top: -5px;
+    height: 10px;
+    width: 10px;
+    background-color: #099fff;
+
+}
+
+
+
+
+
 
 
