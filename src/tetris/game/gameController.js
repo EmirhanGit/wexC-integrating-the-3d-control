@@ -241,7 +241,7 @@ const GameController = om => {
     };
 
     const registerTouchListener = () => {
-
+        playerController.takeCharge();
         document.querySelectorAll("div.proxyBlock").forEach(elem => {
 
             let startX = 0;
@@ -251,19 +251,12 @@ const GameController = om => {
             });
 
             elem.addEventListener("touchend", e => {
-
                 const endX = e.changedTouches[0].clientX;
                 const diffX = endX - startX;
 
-                // Mindeststrecke für Swipe
                 if (Math.abs(diffX) > 40) {
-
-                    // Hier ist dein einzelner CASE:
-                    turnShape(rotateYaw);    // ← dein gewünschter Aufruf
-
+                    turnShape(rotateYaw);
                     console.log("horizontal swipe detected");
-                    alert("miau");
-
                 }
             });
 
