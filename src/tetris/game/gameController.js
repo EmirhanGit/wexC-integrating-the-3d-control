@@ -241,6 +241,8 @@ const GameController = om => {
     };
 
     const registerTouchListener = () => {
+
+        //temporär
         playerController.takeCharge();
         document.querySelectorAll("div.proxyBlock").forEach(elem => {
 
@@ -257,7 +259,13 @@ const GameController = om => {
 
                 if (Math.abs(diffX) > 40) {
                     turnShape(rotateYaw);
-                    console.log("horizontal swipe detected");
+                }
+
+                const endY = e.changedTouches[0].clientY;
+                const diffY = endY - startY;
+
+                if (Math.abs(diffY) > 40) {
+                    turnShape(toppleRoll );
                 }
             });
 
