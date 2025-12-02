@@ -65,14 +65,51 @@ const projectCustom3dController = gameController => {
         else if (gamma < -gammaThreshold) bar_top.style.backgroundColor = activeColor;
     }
 
+    const tiltLock = {
+        left: false,
+        right: false,
+        up: false,
+        down: false
+    };
+
     function handleTilt(beta, gamma) {
         if (!gameController.playerController.areWeInCharge()) return;
 
-        if (beta > betaThreshold) movePosition(moveLeft);
-        if (beta < -betaThreshold) movePosition(moveRight);
+        if (beta > betaThreshold) {
+            if (!tiltLock.left) {
+                movePosition(moveLeft);
+                tiltLock.left = true;
+            }
+        } else {
+            tiltLock.left = false;
+        }
 
-        if (gamma > gammaThreshold) movePosition(moveForw);
-        if (gamma < -gammaThreshold) movePosition(moveBack);
+        if (beta < -betaThreshold) {
+            if (!tiltLock.right) {
+                movePosition(moveRight);
+                tiltLock.right = true;
+            }
+        } else {
+            tiltLock.right = false;
+        }
+
+        if (gamma > gammaThreshold) {
+            if (!tiltLock.down) {
+                movePosition(moveForw);
+                tiltLock.down = true;
+            }
+        } else {
+            tiltLock.down = false;
+        }
+
+        if (gamma < -gammaThreshold) {
+            if (!tiltLock.up) {
+                movePosition(moveBack);
+                tiltLock.up = true;
+            }
+        } else {
+            tiltLock.up = false;
+        }
     }
 
 
