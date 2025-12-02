@@ -34,6 +34,7 @@ const log = LoggerFactory("ch.fhnw.tetris.game.gameController");
  * @property boxController
  * @property tetrominoController
  * @property gameStateController
+ * @property registerTiltListener
  * @property startGame
  * @property restart
  */
@@ -205,6 +206,81 @@ const GameController = om => {
         return collides;
     };
 
+    const tiltLock = {
+        left: false,
+        right: false,
+        up: false,
+        down: false
+    };
+
+    const betaThreshold = 15;
+    const gammaThreshold = 15;
+
+    const handleTilt = (beta, gamma) => {
+        if (!playerController.areWeInCharge()) return;
+
+        if (beta > betaThreshold) {
+            if (!tiltLock.left) {
+                movePosition(moveLeft);
+                tiltLock.left = true;
+            }
+        } else {
+            tiltLock.left = false;
+        }
+
+        if (beta < -betaThreshold) {
+            if (!tiltLock.right) {
+                movePosition(moveRight);
+                tiltLock.right = true;
+            }
+        } else {
+            tiltLock.right = false;
+        }
+
+        if (gamma > gammaThreshold) {
+            if (!tiltLock.down) {
+                movePosition(moveForw);
+                tiltLock.down = true;
+            }
+        } else {
+            tiltLock.down = false;
+        }
+
+        if (gamma < -gammaThreshold) {
+            if (!tiltLock.up) {
+                movePosition(moveBack);
+                tiltLock.up = true;
+            }
+        } else {
+            tiltLock.up = false;
+        }
+    };
+    const registerTiltListener = updateBars => {
+        const requestPermission = () => {
+            if (typeof DeviceOrientationEvent.requestPermission === "function") {
+                DeviceOrientationEvent.requestPermission().then(response => {
+                    if (response !== "granted") {
+                        console.log("Permission not granted");
+                        return;
+                    }
+                    addDeviceOrientation();
+                });
+            } else {
+                addDeviceOrientation();
+            }
+        };
+
+        const addDeviceOrientation = () => {
+            window.addEventListener("deviceorientation", e => {
+                handleTilt(e.beta, e.gamma);
+                updateBars(e.beta, e.gamma);
+            });
+        };
+
+        return requestPermission;
+    };
+
+
     const actionKeys = "ArrowRight ArrowLeft ArrowUp ArrowDown".split(" ");
     /**
      * Key binding for the game (view binding).
@@ -311,6 +387,6 @@ const GameController = om => {
         boxController,
         tetrominoController,
         restart,
-        movePosition,
+        registerTiltListener
     }
 };

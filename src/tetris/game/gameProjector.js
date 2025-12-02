@@ -5,9 +5,6 @@ import {LoggerFactory} from "../../kolibri/logger/loggerFactory.js";
 import {MISSING_FOREIGN_KEY} from "../../extension/relationalModelType.js";
 import {projectPlayerList} from "../player/playerProjector.js";
 import {projectGameState} from "../gameState/gameStateProjector.js";
-import {
-    moveBack, moveForw, moveLeft, moveRight
-} from "../shape/shapeController.js";
 
 export {projectGame};
 
@@ -27,9 +24,6 @@ const projectCustom3dController = gameController => {
             <div id="bar-bottom" class="bar">bottom</div>
             <div id="bar-left" class="bar">left</div>
             <div id="bar-right" class="bar">right</div>
-            <p id="alpha">Alpha:</p>
-            <p id="beta">Beta:</p>
-            <p id="gamma">Gamma:</p>
         </div>
     `);
 
@@ -41,18 +35,13 @@ const projectCustom3dController = gameController => {
     const bar_left = wrapper.querySelector("#bar-left");
     const bar_right = wrapper.querySelector("#bar-right");
 
-    const alphaP = wrapper.querySelector("#alpha");
-    const betaP = wrapper.querySelector("#beta");
-    const gammaP = wrapper.querySelector("#gamma");
-
     const activeColor = "#00DDED";
     const neutralColor = "grey";
     const betaThreshold = 15;
     const gammaThreshold = 15;
 
-    const { movePosition } = gameController;
 
-    function updateBars(beta, gamma) {
+    const updateBars = (beta, gamma) => {
         bar_top.style.backgroundColor = neutralColor;
         bar_bottom.style.backgroundColor = neutralColor;
         bar_left.style.backgroundColor = neutralColor;
@@ -63,98 +52,18 @@ const projectCustom3dController = gameController => {
 
         if (gamma > gammaThreshold) bar_bottom.style.backgroundColor = activeColor;
         else if (gamma < -gammaThreshold) bar_top.style.backgroundColor = activeColor;
-    }
-
-    const tiltLock = {
-        left: false,
-        right: false,
-        up: false,
-        down: false
     };
 
-    function handleTilt(beta, gamma) {
-        if (!gameController.playerController.areWeInCharge()) return;
+    const requestPermission = gameController.registerTiltListener(updateBars);
 
-        if (beta > betaThreshold) {
-            if (!tiltLock.left) {
-                movePosition(moveLeft);
-                tiltLock.left = true;
-            }
-        } else {
-            tiltLock.left = false;
-        }
-
-        if (beta < -betaThreshold) {
-            if (!tiltLock.right) {
-                movePosition(moveRight);
-                tiltLock.right = true;
-            }
-        } else {
-            tiltLock.right = false;
-        }
-
-        if (gamma > gammaThreshold) {
-            if (!tiltLock.down) {
-                movePosition(moveForw);
-                tiltLock.down = true;
-            }
-        } else {
-            tiltLock.down = false;
-        }
-
-        if (gamma < -gammaThreshold) {
-            if (!tiltLock.up) {
-                movePosition(moveBack);
-                tiltLock.up = true;
-            }
-        } else {
-            tiltLock.up = false;
-        }
-    }
-
-
-    function requestOrientation() {
+    enableBtn.onclick = () => {
         console.log("Permission requested…");
-
         gameController.playerController.takeCharge();
-
-        if (typeof DeviceOrientationEvent.requestPermission === "function") {
-            DeviceOrientationEvent.requestPermission().then(response => {
-                if (response === "granted") {
-
-                    console.log("Permission granted!");
-
-                    window.addEventListener("deviceorientation", e => {
-                        updateBars(e.beta, e.gamma);
-                        handleTilt(e.beta, e.gamma);
-
-                        alphaP.textContent = "Alpha: " + Math.round(e.alpha);
-                        betaP.textContent = "Beta: " + Math.round(e.beta);
-                        gammaP.textContent = "Gamma: " + Math.round(e.gamma);
-                    });
-
-                } else {
-                    alert("Permission not granted!");
-                }
-            });
-        } else {
-            window.addEventListener("deviceorientation", e => {
-                updateBars(e.beta, e.gamma);
-                handleTilt(e.beta, e.gamma);
-
-                alphaP.textContent = "Alpha: " + Math.round(e.alpha);
-                betaP.textContent = "Beta: " + Math.round(e.beta);
-                gammaP.textContent = "Gamma: " + Math.round(e.gamma);
-            });
-        }
-    }
-
-    enableBtn.onclick = requestOrientation;
+        requestPermission();
+    };
 
     return view;
 };
-
-
 
 /**
  * Create the control panel view and bind to the controller actions
