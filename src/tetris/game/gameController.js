@@ -243,17 +243,31 @@ const GameController = om => {
     const registerTouchListener = () => {
 
         document.querySelectorAll("div.proxyBlock").forEach(elem => {
-            elem.addEventListener("touchstart", handleStart, { passive: true });
-        });
 
-        document.querySelectorAll("div.proxyBlock").forEach(elem => {
-            elem.addEventListener("click", handleStart, { passive: true });
-        });
+            let startX = 0;
 
-        function handleStart(event) {
-            console.log("hello");
-            alert("miau");
-        }
+            elem.addEventListener("touchstart", e => {
+                startX = e.touches[0].clientX;
+            });
+
+            elem.addEventListener("touchend", e => {
+
+                const endX = e.changedTouches[0].clientX;
+                const diffX = endX - startX;
+
+                // Mindeststrecke für Swipe
+                if (Math.abs(diffX) > 40) {
+
+                    // Hier ist dein einzelner CASE:
+                    turnShape(rotateYaw);    // ← dein gewünschter Aufruf
+
+                    console.log("horizontal swipe detected");
+                    alert("miau");
+
+                }
+            });
+
+        });
     };
 
 
