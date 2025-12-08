@@ -147,6 +147,7 @@ const GameController = om => {
     };
 
     let currentlyFalling = false; // whether we _actually_ fall - as opposed to whether we _should_ fall (gameState)
+    let fallDelay = 1000;
     /**
      * @private
      * Principle game loop implementation: let the current tetromino fall down slowly and check for the end of the game.
@@ -173,7 +174,7 @@ const GameController = om => {
             return;
         }
         currentlyFalling = true;
-        setTimeout(fallTask, 1 * 1000);
+        setTimeout(fallTask, fallDelay);
     };
 
     const isDisallowedBoxPosition = ({xPos, yPos}) => {
@@ -240,34 +241,21 @@ const GameController = om => {
         };
     };
 
-    let scrollIntervalID = null;
-    const getScrollValue = () => {
-        let slider;
-        const value = Number(slider.value);
-        return Number.isFinite(value) ? value : 50;
-    };
+
     const registerScrollListener = () =>{
-        if(scrollIntervalID != null){
-            clearInterval(scrollIntervalID);
-            scrollIntervalID = null;
-        }
+        const min= 80;
+        const max= 1200;
 
-        const startScrollControlledFall = () => {
-            const value = getScrollValue();
-
-            const min= 80;
-            const max= 1200;
-            const delay= max - (value / 100) * (max-min);
-
-            scrollIntervalID = setInterval(() => {
-                if(!playerController.areWeInCharge()) return;
-                if(!gameStateController.isFallingDown())return;
-                movePosition(moveDown);
-            }, delay);
+        const updateFallSpeed = slider => {
+            const value = Number(slider.value) || 50;
+            fallDelay = max - (value/100) * (max-min);
         };
-        startScrollControlledFall();
 
-    }
+        slider.addEventListener("input", updateFallSpeed);
+        updateFallSpeed();
+
+    };
+
 
 
 
@@ -341,5 +329,6 @@ const GameController = om => {
         boxController,
         tetrominoController,
         restart,
+        registerScrollListener
     }
 };
