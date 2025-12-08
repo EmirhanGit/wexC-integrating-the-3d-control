@@ -280,16 +280,20 @@ footer {
     transform-origin: center;
 }
 
+
+
+
 /* SQUASH on click (press) */
 .slider:active::-webkit-slider-thumb,
 .slider:active::-moz-range-thumb {
     transform: scale(1.3, 0.8); /* wider, flatter */
 }
 
+
 /* STRETCH while dragging */
 .slider.dragging::-webkit-slider-thumb,
 .slider.dragging::-moz-range-thumb {
-    transform: scale(0.8, 1.4); /* narrower, taller */
+    transform: scale(1.4, 0.8); /* narrower, taller */
 }
 
 

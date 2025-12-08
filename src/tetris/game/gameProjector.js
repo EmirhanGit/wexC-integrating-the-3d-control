@@ -32,11 +32,15 @@ const projectCustom3dController = gameController => {
     const slider = view[0].querySelector("#myRange");
 
     // Add squash & stretch animation classes
-    slider.addEventListener("mousedown", () => slider.classList.add("dragging"));
-    slider.addEventListener("touchstart", () => slider.classList.add("dragging"));
+    slider.addEventListener("mousedown", () => slider.classList.add("pressed"));
+    slider.addEventListener("touchstart", () => slider.classList.add("pressed"));
 
-    window.addEventListener("mouseup", () => slider.classList.remove("dragging"));
-    window.addEventListener("touchend", () => slider.classList.remove("dragging"));
+    window.addEventListener("mouseup", () => slider.classList.remove("pressed"));
+    window.addEventListener("touchend", () => slider.classList.remove("pressed"));
+
+
+
+
     return view;
 };
 

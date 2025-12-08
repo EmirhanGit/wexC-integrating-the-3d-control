@@ -240,6 +240,36 @@ const GameController = om => {
         };
     };
 
+    let scrollIntervalID = null;
+    const getScrollValue = () => {
+        let slider;
+        const value = Number(slider.value);
+        return Number.isFinite(value) ? value : 50;
+    };
+    const registerScrollListener = () =>{
+        if(scrollIntervalID != null){
+            clearInterval(scrollIntervalID);
+            scrollIntervalID = null;
+        }
+
+        const startScrollControlledFall = () => {
+            const value = getScrollValue();
+
+            const min= 80;
+            const max= 1200;
+            const delay= max - (value / 100) * (max-min);
+
+            scrollIntervalID = setInterval(() => {
+                if(!playerController.areWeInCharge()) return;
+                if(!gameStateController.isFallingDown())return;
+                movePosition(moveDown);
+            }, delay);
+        };
+        startScrollControlledFall();
+
+    }
+
+
 
     /** @type { (onFinishedCallback: Function) => void } */
     const restart  = (onFinishedCallback) => {
