@@ -19,16 +19,20 @@ const projectCustom3dController = gameController => {
 
     const view = dom(`
         <div id="tilt-wrapper">
-            <button id="enableMotion">Enable motion</button>
             <div id="bar-top" class="bar">top</div>
             <div id="bar-bottom" class="bar">bottom</div>
             <div id="bar-left" class="bar">left</div>
             <div id="bar-right" class="bar">right</div>
+            <div id="enablDeviceOrientationModal" class="modal">
+                      <button id="enableMotion">Enable motion</button>
+            </div>
         </div>
+        
     `);
 
     const wrapper = view[0];
 
+    const modal = wrapper.querySelector("#enablDeviceOrientationModal");
     const enableBtn = wrapper.querySelector("#enableMotion");
     const bar_top = wrapper.querySelector("#bar-top");
     const bar_bottom = wrapper.querySelector("#bar-bottom");
@@ -58,6 +62,7 @@ const projectCustom3dController = gameController => {
 
     enableBtn.onclick = () => {
         console.log("Permission requested…");
+        modal.style.display = "none";
         gameController.playerController.takeCharge();
         requestPermission();
     };
