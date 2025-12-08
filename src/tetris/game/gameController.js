@@ -242,11 +242,11 @@ const GameController = om => {
     };
 
 
-    const registerScrollListener = () =>{
+    const registerScrollListener = slider =>{
         const min= 80;
         const max= 1200;
 
-        const updateFallSpeed = slider => {
+        const updateFallSpeed = () => {
             const value = Number(slider.value) || 50;
             fallDelay = max - (value/100) * (max-min);
         };
@@ -328,7 +328,7 @@ const GameController = om => {
         gameStateController,
         boxController,
         tetrominoController,
-        restart,
-        registerScrollListener
+        registerScrollListener,
+        restart
     }
 };
