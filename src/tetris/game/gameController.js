@@ -257,15 +257,19 @@ const GameController = om => {
                 const endX = e.changedTouches[0].clientX;
                 const diffX = endX - startX;
 
-                if (Math.abs(diffX) > 40) {
+                if (diffX > 40) {
+                    //swipe Left
                     turnShape(rotateYaw);
+                } else if (diffX < 0){
+                    //swipe Right
+                    turnShape(toppleRoll );
                 }
 
                 const endY = e.changedTouches[0].clientY;
                 const diffY = endY - startY;
 
                 if (Math.abs(diffY) > 40) {
-                    turnShape(toppleRoll );
+                    turnShape(topplePitch);
                 }
             });
 
