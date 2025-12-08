@@ -260,7 +260,7 @@ const GameController = om => {
                 if (diffX > 40) {
                     //swipe Left
                     turnShape(rotateYaw);
-                } else if (diffX < 0){
+                } else if (diffX < -40){
                     //swipe Right
                     turnShape(toppleRoll );
                 }
