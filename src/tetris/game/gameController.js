@@ -321,13 +321,14 @@ const GameController = om => {
         document.querySelectorAll("div.proxyBlock").forEach(elem => {
 
             let startX = 0;
-            const startY = 0;
+            let startY = 0; 
 
             elem.addEventListener("touchstart", e => {
-                console.log("testing");
+                e.preventDefault();
 
                 startX = e.touches[0].clientX;
-            });
+                startY = e.touches[0].clientY;
+            }, { passive: false });
 
             elem.addEventListener("touchend", e => {
                 const endX = e.changedTouches[0].clientX;
@@ -339,10 +340,8 @@ const GameController = om => {
                 if (Math.abs(diffX) > Math.abs(diffY)) {
 
                     if (diffX > 40) {
-                        // SWIPE LEFT TO RIGHT (Positive change)
                         turnShape(rotateYaw);
                     } else if (diffX < -40) {
-                        // SWIPE RIGHT TO LEFT (Negative change)
                         turnShape(toppleRoll);
                     }
 
@@ -352,9 +351,6 @@ const GameController = om => {
                     }
                 }
             });
-
-            elem.onmousedown = elem.ontouchstart;   // handle mouse and touch events identically
-            elem.onmouseup = elem.ontouchend;
 
         });
     };
