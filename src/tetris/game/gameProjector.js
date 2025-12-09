@@ -18,6 +18,9 @@ const log = LoggerFactory("ch.fhnw.tetris.gameProjector");
 const projectCustom3dController = gameController => {
 
     const view = dom(`
+        
+       <div class="slidecontainer">  
+        <input type="range" min="1" max="100" value="50" class="slider" id="myRange">
         <div class="proxyBlock"></div>
         <div id="tilt-wrapper">
             <div id="bar-top" class="bar"></div>
@@ -30,6 +33,17 @@ const projectCustom3dController = gameController => {
         </div>
         
     `);
+
+    const slider = view[0].querySelector("#myRange");
+
+    gameController.registerScrollListener(slider);
+
+    // Add squash & stretch animation classes
+    slider.addEventListener("mousedown", () => slider.classList.add("pressed"));
+    slider.addEventListener("touchstart", () => slider.classList.add("pressed"));
+
+    window.addEventListener("mouseup", () => slider.classList.remove("pressed"));
+    window.addEventListener("touchend", () => slider.classList.remove("pressed"));
 
     const wrapper = view[0];
 

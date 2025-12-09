@@ -148,6 +148,7 @@ const GameController = om => {
     };
 
     let currentlyFalling = false; // whether we _actually_ fall - as opposed to whether we _should_ fall (gameState)
+    let fallDelay = 1000;
     /**
      * @private
      * Principle game loop implementation: let the current tetromino fall down slowly and check for the end of the game.
@@ -174,7 +175,7 @@ const GameController = om => {
             return;
         }
         currentlyFalling = true;
-        setTimeout(fallTask, 1 * 1000);
+        setTimeout(fallTask, fallDelay);
     };
 
     const isDisallowedBoxPosition = ({xPos, yPos}) => {
@@ -354,6 +355,23 @@ const GameController = om => {
 
 
 
+    const registerScrollListener = slider =>{
+        const min= 80;
+        const max= 1200;
+
+        const updateFallSpeed = () => {
+            const value = Number(slider.value) || 50;
+            fallDelay = min + (value/100) * (max-min);
+        };
+
+        slider.addEventListener("input", updateFallSpeed);
+        updateFallSpeed();
+
+    };
+
+
+
+
     /** @type { (onFinishedCallback: Function) => void } */
     const restart  = (onFinishedCallback) => {
         if (!playerController.areWeInCharge()) return;
@@ -424,6 +442,7 @@ const GameController = om => {
         gameStateController,
         boxController,
         tetrominoController,
+        registerScrollListener,
         restart,
         registerTiltListener
     }
