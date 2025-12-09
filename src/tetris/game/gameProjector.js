@@ -1,10 +1,10 @@
 import "../../kolibri/util/array.js";
 import {dom, select}              from "../../kolibri/util/dom.js";
 import {registerForMouseAndTouch} from "../scene3D/scene.js";
-import {LoggerFactory}            from "../../kolibri/logger/loggerFactory.js";
-import {MISSING_FOREIGN_KEY}      from "../../extension/relationalModelType.js";
-import {projectPlayerList}        from "../player/playerProjector.js";
-import {projectGameState}         from "../gameState/gameStateProjector.js";
+import {LoggerFactory} from "../../kolibri/logger/loggerFactory.js";
+import {MISSING_FOREIGN_KEY} from "../../extension/relationalModelType.js";
+import {projectPlayerList} from "../player/playerProjector.js";
+import {projectGameState} from "../gameState/gameStateProjector.js";
 
 export {projectGame};
 
@@ -16,9 +16,99 @@ const log = LoggerFactory("ch.fhnw.tetris.gameProjector");
  * @return { HTMLCollection }
  */
 const projectCustom3dController = gameController => {
-    const view = dom(`    
-    <div class="proxyBlock"></div>
+
+    const view = dom(`
+        <div class="proxyBlock"></div>
+        <div id="tilt-wrapper">
+            <div id="bar-top" class="bar"></div>
+            <div id="bar-bottom" class="bar"></div>
+            <div id="bar-left" class="bar"></div>
+            <div id="bar-right" class="bar"></div>
+            <div id="enablDeviceOrientationModal" class="modal">
+                      <button id="enableMotion">Enable motion</button>
+            </div>
+        </div>
+        
     `);
+
+    const wrapper = view[0];
+
+    const modal = wrapper.querySelector("#enablDeviceOrientationModal");
+    const enableBtn = wrapper.querySelector("#enableMotion");
+    const bar_top = wrapper.querySelector("#bar-top");
+    const bar_bottom = wrapper.querySelector("#bar-bottom");
+    const bar_left = wrapper.querySelector("#bar-left");
+    const bar_right = wrapper.querySelector("#bar-right");
+
+    const betaThreshold = 15;
+    const gammaThreshold = 15;
+
+    const updateBars = (beta, gamma) => {
+        const progressTop = gamma < 0 ? Math.min(Math.abs(gamma) / gammaThreshold, 1) : 0;
+        const progressBottom = gamma > 0 ? Math.min(gamma / gammaThreshold, 1) : 0;
+        const progressLeft = beta > 0 ? Math.min(beta / betaThreshold, 1) : 0;
+        const progressRight = beta < 0 ? Math.min(Math.abs(beta) / betaThreshold, 1) : 0;
+
+        bar_top.style.opacity = progressTop > 0 ? "1" : "0";
+        bar_top.style.background = `
+            linear-gradient(
+                to bottom,
+                rgba(0, 221, 237, 1) 0%,
+                rgba(0, 221, 237, 1) ${progressTop * 100}%,
+                rgba(0, 221, 237, 0) ${progressTop * 100}%
+            )
+        `;
+
+        bar_bottom.style.opacity = progressBottom > 0 ? "1" : "0";
+        bar_bottom.style.background = `
+            linear-gradient(
+                to top,
+                rgba(0, 221, 237, 1) 0%,
+                rgba(0, 221, 237, 1) ${progressBottom * 100}%,
+                rgba(0, 221, 237, 0) ${progressBottom * 100}%
+            )
+        `;
+
+        bar_left.style.opacity = progressLeft > 0 ? "1" : "0";
+        bar_left.style.background = `
+            linear-gradient(
+                to right,
+                rgba(0, 221, 237, 1) 0%,
+                rgba(0, 221, 237, 1) ${progressLeft * 100}%,
+                rgba(0, 221, 237, 0) ${progressLeft * 100}%
+            )
+        `;
+
+        bar_right.style.opacity = progressRight > 0 ? "1" : "0";
+        bar_right.style.background = `
+            linear-gradient(
+                to left,
+                rgba(0, 221, 237, 1) 0%,
+                rgba(0, 221, 237, 1) ${progressRight * 100}%, 
+                rgba(0, 221, 237, 0) ${progressRight * 100}%
+            )
+        `;
+
+        bar_top.classList.remove("tilt-reached");
+        bar_bottom.classList.remove("tilt-reached");
+        bar_left.classList.remove("tilt-reached");
+        bar_right.classList.remove("tilt-reached");
+
+        if (progressTop >= 1) bar_top.classList.add("tilt-reached");
+        if (progressBottom >= 1) bar_bottom.classList.add("tilt-reached");
+        if (progressLeft >= 1) bar_left.classList.add("tilt-reached");
+        if (progressRight >= 1) bar_right.classList.add("tilt-reached");
+
+    };
+
+    const requestPermission = gameController.registerTiltListener(updateBars);
+
+    enableBtn.onclick = () => {
+        console.log("Permission requested…");
+        modal.style.display = "none";
+        gameController.playerController.takeCharge();
+        requestPermission();
+    };
 
     return view;
 };
