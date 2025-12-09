@@ -248,7 +248,7 @@ const GameController = om => {
 
         const updateFallSpeed = () => {
             const value = Number(slider.value) || 50;
-            fallDelay = max - (value/100) * (max-min);
+            fallDelay = min + (value/100) * (max-min);
         };
 
         slider.addEventListener("input", updateFallSpeed);
