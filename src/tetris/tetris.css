@@ -347,16 +347,16 @@ footer {
 .slider::-webkit-slider-thumb {
     -webkit-appearance: none; /* Override default look */
     appearance: none;
-    width: 25px; /* Set a specific slider handle width */
-    height: 25px; /* Slider handle height */
+    width: 35px; /* Set a specific slider handle width */
+    height: 35px; /* Slider handle height */
     background: #37CEFA; /* Green background */
     border-radius: 50%;
     cursor: pointer; /* Cursor on hover */
 }
 
 .slider::-moz-range-thumb {
-    width: 25px; /* Set a specific slider handle width */
-    height: 25px; /* Slider handle height */
+    width: 35px; /* Set a specific slider handle width */
+    height: 35px; /* Slider handle height */
     background: #37CEFA; /* Green background */
     cursor: pointer; /* Cursor on hover */
     border-radius: 50%;
