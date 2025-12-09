@@ -318,15 +318,14 @@ const GameController = om => {
     };
 
     const registerTouchListener = () => {
-
-        //temporär
-        playerController.takeCharge();
         document.querySelectorAll("div.proxyBlock").forEach(elem => {
 
             let startX = 0;
-            let startY = 0;
+            const startY = 0;
 
             elem.addEventListener("touchstart", e => {
+                console.log("testing");
+
                 startX = e.touches[0].clientX;
             });
 
@@ -349,6 +348,9 @@ const GameController = om => {
                     turnShape(topplePitch);
                 }
             });
+
+            elem.onmousedown = elem.ontouchstart;   // handle mouse and touch events identically
+            elem.onmouseup = elem.ontouchend;
 
         });
     };

@@ -20,11 +20,10 @@ const projectCustom3dController = gameController => {
     const view = dom(`
         
         <div class="container">
+            <div class="proxyBlock"></div>
             <div class="slidecontainer">  
                 <input type="range" min="1" max="100" value="50" class="slider" id="myRange">
-            </div>>
-            
-            <div class="proxyBlock"></div>
+            </div>
             
             <div id="tilt-wrapper">
                 <div id="bar-top" class="bar"></div>
