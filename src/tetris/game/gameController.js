@@ -240,6 +240,43 @@ const GameController = om => {
         };
     };
 
+    const registerTouchListener = () => {
+
+        //temporär
+        playerController.takeCharge();
+        document.querySelectorAll("div.proxyBlock").forEach(elem => {
+
+            let startX = 0;
+            let startY = 0;
+
+            elem.addEventListener("touchstart", e => {
+                startX = e.touches[0].clientX;
+            });
+
+            elem.addEventListener("touchend", e => {
+                const endX = e.changedTouches[0].clientX;
+                const diffX = endX - startX;
+
+                if (diffX > 40) {
+                    //swipe Left
+                    turnShape(rotateYaw);
+                } else if (diffX < -40){
+                    //swipe Right
+                    turnShape(toppleRoll );
+                }
+
+                const endY = e.changedTouches[0].clientY;
+                const diffY = endY - startY;
+
+                if (Math.abs(diffY) > 40) {
+                    turnShape(topplePitch);
+                }
+            });
+
+        });
+    };
+
+
 
     /** @type { (onFinishedCallback: Function) => void } */
     const restart  = (onFinishedCallback) => {
@@ -302,6 +339,7 @@ const GameController = om => {
         playerController   .startListening();
 
         registerKeyListener();
+        registerTouchListener();
     };
 
     return {
