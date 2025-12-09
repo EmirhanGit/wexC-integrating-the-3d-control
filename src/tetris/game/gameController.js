@@ -331,21 +331,25 @@ const GameController = om => {
 
             elem.addEventListener("touchend", e => {
                 const endX = e.changedTouches[0].clientX;
-                const diffX = endX - startX;
-
-                if (diffX > 40) {
-                    //swipe Left
-                    turnShape(rotateYaw);
-                } else if (diffX < -40){
-                    //swipe Right
-                    turnShape(toppleRoll );
-                }
-
                 const endY = e.changedTouches[0].clientY;
+
+                const diffX = endX - startX;
                 const diffY = endY - startY;
 
-                if (Math.abs(diffY) > 40) {
-                    turnShape(topplePitch);
+                if (Math.abs(diffX) > Math.abs(diffY)) {
+
+                    if (diffX > 40) {
+                        // SWIPE LEFT TO RIGHT (Positive change)
+                        turnShape(rotateYaw);
+                    } else if (diffX < -40) {
+                        // SWIPE RIGHT TO LEFT (Negative change)
+                        turnShape(toppleRoll);
+                    }
+
+                } else {
+                    if (Math.abs(diffY) > 40) {
+                        turnShape(topplePitch);
+                    }
                 }
             });
 
