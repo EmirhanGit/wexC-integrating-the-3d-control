@@ -19,18 +19,24 @@ const projectCustom3dController = gameController => {
 
     const view = dom(`
         
-       <div class="slidecontainer">  
-        <input type="range" min="1" max="100" value="50" class="slider" id="myRange">
-        <div class="proxyBlock"></div>
-        <div id="tilt-wrapper">
-            <div id="bar-top" class="bar"></div>
-            <div id="bar-bottom" class="bar"></div>
-            <div id="bar-left" class="bar"></div>
-            <div id="bar-right" class="bar"></div>
-            <div id="enablDeviceOrientationModal" class="modal">
-                      <button id="enableMotion">Enable motion</button>
+        <div class="container">
+            <div class="slidecontainer">  
+                <input type="range" min="1" max="100" value="50" class="slider" id="myRange">
+            </div>>
+            
+            <div class="proxyBlock"></div>
+            
+            <div id="tilt-wrapper">
+                <div id="bar-top" class="bar"></div>
+                <div id="bar-bottom" class="bar"></div>
+                <div id="bar-left" class="bar"></div>
+                <div id="bar-right" class="bar"></div>
+                <div id="enablDeviceOrientationModal" class="modal">
+                          <button id="enableMotion">Enable motion</button>
+                </div>
             </div>
         </div>
+        
         
     `);
 
@@ -45,14 +51,14 @@ const projectCustom3dController = gameController => {
     window.addEventListener("mouseup", () => slider.classList.remove("pressed"));
     window.addEventListener("touchend", () => slider.classList.remove("pressed"));
 
-    const wrapper = view[0];
 
-    const modal = wrapper.querySelector("#enablDeviceOrientationModal");
-    const enableBtn = wrapper.querySelector("#enableMotion");
-    const bar_top = wrapper.querySelector("#bar-top");
-    const bar_bottom = wrapper.querySelector("#bar-bottom");
-    const bar_left = wrapper.querySelector("#bar-left");
-    const bar_right = wrapper.querySelector("#bar-right");
+
+    const modal = view[0].querySelector("#enablDeviceOrientationModal");
+    const enableBtn = view[0].querySelector("#enableMotion");
+    const bar_top = view[0].querySelector("#bar-top");
+    const bar_bottom = view[0].querySelector("#bar-bottom");
+    const bar_left = view[0].querySelector("#bar-left");
+    const bar_right = view[0].querySelector("#bar-right");
 
     const betaThreshold = 15;
     const gammaThreshold = 15;

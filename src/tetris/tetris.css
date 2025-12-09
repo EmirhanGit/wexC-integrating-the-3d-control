@@ -48,7 +48,9 @@ header {
         }
     }
 }
-
+.container{
+    display: contents;
+}
 .modal {
     position: fixed;
     z-index: 1;
