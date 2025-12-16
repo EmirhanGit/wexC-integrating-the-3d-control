@@ -321,7 +321,7 @@ const GameController = om => {
         document.querySelectorAll("div.proxyBlock").forEach(elem => {
 
             let startX = 0;
-            let startY = 0; 
+            let startY = 0;
 
             elem.addEventListener("touchstart", e => {
                 e.preventDefault();
